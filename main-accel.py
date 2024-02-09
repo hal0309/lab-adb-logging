@@ -4,10 +4,11 @@ import pickle
 import time
 import os
 
-IP = "192.168.1.12:41293"
-# IP = "10.35.103.81:41029"
+# IP = "192.168.1.12:41293"
+IP = "10.35.103.81:44037"
 TAG = "MyLogging"
-START_STATUS = "startAcc"
+START_STATUS = "start"
+START_ACC_STATUS = "startAcc"
 FINISH_STATUS = "finish"
 
 FILEDIR = f"log\{time.time()}"
@@ -26,8 +27,9 @@ def main():
     json_log = []
 
     while True:
-
         n = 0
+
+        subprocess.run(cmd_logcast_rest, shell=True)
 
         # フィルタ済みログデータを出力
         for output_line in process.stdout:
@@ -37,9 +39,12 @@ def main():
                 print(splited_line[1])
                 json_full = json.loads(splited_line[1])
 
+                if(json_full["status"] == START_STATUS):
+                    continue
+
                 json_log.append(json_full)
 
-                if(json_full["status"] == START_STATUS):
+                if(json_full["status"] == START_ACC_STATUS):
                     print("started")
                     n = json_full["n"]
                     continue
@@ -59,6 +64,8 @@ def main():
         f = open(fname, 'wb')    
         pickle.dump(json_log, f)
         f.close()
+
+        json_log = []
 
         f = open(fname, 'rb')
         data_list = pickle.load(f)

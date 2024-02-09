@@ -4,7 +4,7 @@ import pickle
 import time
 
 # IP = "192.168.1.12:41293"
-IP = "10.35.103.81:33517"
+IP = "10.35.103.81:44037"
 TAG = "MyLogging"
 START_STATUS = "start"
 FINISH_STATUS = "finish"
