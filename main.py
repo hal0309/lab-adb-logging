@@ -1,10 +1,13 @@
 import subprocess
 import json
 import pickle
+import time
 
-IP = "192.168.1.11:38501"
+# IP = "192.168.1.12:41293"
+IP = "10.35.103.81:33517"
 TAG = "MyLogging"
-FINISH_CODE = "FINISH"
+START_STATUS = "start"
+FINISH_STATUS = "finish"
 
 def main():
     cmd_connect = f"adb connect {IP}" # 接続
@@ -29,36 +32,30 @@ def main():
 
             json_log.append(json_full)
 
-            if(json_full["status"] == "finish"):
+            if(json_full["status"] == START_STATUS):
+                print("started")
+                continue
+            elif(json_full["status"] == FINISH_STATUS):
                 print("finished")
                 process.kill()
                 break
-
-            print(json_full["status"])
-            json_mf = json_full["magneticField"]
+            else:
+                print(json_full["status"])
+                json_mf = json_full["magneticField"]
 
         except Exception as e:
             print("error", e)
             continue
-        
-        
 
-        """
-        ここに好きな処理を書く
-        """
-        if FINISH_CODE in output_line:
-            process.kill()
-        
-            break
-
-    f = open('log.pickle', 'wb')    
+    fname = f'log_{time.time()}.pickle'
+    f = open(fname, 'wb')    
     pickle.dump(json_log, f)
     f.close()
 
-    f = open('log.pickle', 'rb')
+    f = open(fname, 'rb')
     data_list = pickle.load(f)
     for data in data_list:
-        print(data["status"])
+        print(data)
     f.close()
 
 
