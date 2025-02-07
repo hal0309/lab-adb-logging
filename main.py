@@ -2,9 +2,10 @@ import subprocess
 import json
 import pickle
 import time
+import winsound
 
-# IP = "192.168.1.12:41293"
-IP = "10.35.103.81:44037"
+# IP = "192.168.1.19:35515"
+IP = "10.35.103.81:42681"
 TAG = "MyLogging"
 START_STATUS = "start"
 FINISH_STATUS = "finish"
@@ -41,10 +42,12 @@ def main():
                 break
             else:
                 print(json_full["status"])
-                json_mf = json_full["magneticField"]
+                json_mf = json_full["mf"]
+                winsound.Beep(3000, 1000)
 
         except Exception as e:
             print("error", e)
+            winsound.Beep(900, 1000)
             continue
 
     fname = f'log_{time.time()}.pickle'

@@ -5,7 +5,7 @@ import time
 import os
 
 # IP = "192.168.1.12:41293"
-IP = "10.35.103.81:43923"
+IP = "10.35.103.81:40795"
 TAG = "MyLogging"
 START_STATUS = "start"
 START_ACC_STATUS = "startAcc"
